@@ -10,7 +10,7 @@ export default{
         const start = `${today}T00:00`; //midnight of the specific date 
         const length = 24;
 
-        const fullUrl = `http://www.worldtides.info/api/v3?date=${today}&lat=${lat}&lon=${lon}&key=${key}&days=1&extremes=true&localtime`;
+        const fullUrl = `https://www.worldtides.info/api/v3?date=${today}&lat=${lat}&lon=${lon}&key=${key}&days=1&extremes=true&localtime`;
 
 
 
