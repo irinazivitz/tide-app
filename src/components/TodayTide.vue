@@ -38,16 +38,20 @@
          <table class = "table table-bordered table-striped custom-rounded-table" >
                     <thead> 
                         <tr> 
-                        <th scope="col" class = "text-center">Tide</th>
-                        <th scope="col" class = "text-center">Local Time</th>
-                        <th scope="col" class = "text-center">Height (m | ft)</th>
+                        <th scope="col" class = "text-center fw-bold">Tide</th>
+                        <th scope="col" class = "text-center fw-bold">Local Time</th>
+                        <th scope="col" class = "text-center fw-bold">
+                            <span  class = "text-center fw-bold">Height ({{ heightUnit}} | </span>
+                            <span class="ms-1 me-1 text-center fw-bold" @click="toggleHeightUnit" style="cursor: pointer; margin-left: 0px;">
+                             {{ heightUnit === 'm' ? 'ft' : 'm' }}) </span>
+                        </th>
                         </tr>
                     </thead>
                     <tbody class="table-group-divider">
                         <tr v-for="(tide, index) in weatherStore.tideData.extremes" :key="index">
                             <th scope="row"> {{ tide.type}} </th>
                             <td class = "text-center">{{ convertToLocalTime(tide.date)}}</td>
-                            <td class = "text-center"> {{tide.height.toFixed(2)}} meters </td>
+                            <td class = "text-center"> {{convertHeight(tide.height).toFixed(2)}} {{ heightUnit}} </td>
                         </tr>
                     </tbody>
         </table>
@@ -72,6 +76,7 @@ export default {
     data () {
         return {
             today: new Date(),
+            heightUnit: 'm',
         };
     },
     computed: {
@@ -105,10 +110,6 @@ export default {
             const temp = this.weatherStore.weatherData?.main?.temp;
             if (temp === undefined) return '';
             return this.weatherStore.tempUnit === 'F' ? temp : ((temp - 32) * (5/9)).toFixed(1);
-        },
-        convertedHeight(){
-            const height = this.weatherStore.tideData.heights; /// need to finish this method 
-
         },
         weatherIconUrl(){
                 if ( 
@@ -151,7 +152,16 @@ export default {
         }, 
         toggleTempUnit(){
                 this.weatherStore.tempUnit = this.weatherStore.tempUnit === 'F' ? 'C' : 'F';
-        }  
+        },
+        toggleHeightUnit(){
+            this.heightUnit = this.heightUnit ==='m' ? 'ft' : 'm';
+        },
+        convertHeight (heightInFeet){
+            if(this.heightUnit === 'ft'){
+                return heightInFeet * 0.3048;
+            }
+            return heightInFeet;
+        },
     },
     created() {
         this.weatherStore.setZipcode('90291');
