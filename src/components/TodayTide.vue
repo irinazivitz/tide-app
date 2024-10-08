@@ -1,6 +1,7 @@
 <template>
     <div v-if="weatherStore.loading">Loading...</div>
     <div v-else-if = "weatherStore.error"> {{weatherStore.error }} </div>
+    
 
     <div class="container weather-tide-area" v-else>
         <div class="container" v-if="weatherStore.weatherData && weatherStore.weatherData.name && weatherStore.weatherData.sys"
@@ -30,11 +31,13 @@
                 </div> 
             </div>
     </div>
-    <hr>
+
+    <hr class="wide-hr">
+    
 
     <div v-if="weatherStore.tideData.extremes.length">
          
-         <h4 class="text-center">Tide schedule for {{todayDate}}</h4>
+         <h4 class="text-center">Tide forecast for {{todayDate}}</h4>
          <table class = "table table-bordered table-striped custom-rounded-table" >
                     <thead> 
                         <tr> 
@@ -192,4 +195,10 @@ export default {
     color: #000; /* Text color (you can change this based on your design) */
     max-width: fit-content; /* Adjust the frame width to the content */
 }
+.wide-hr{
+    width: 100vw;
+    margin-left: calc(-50vw + 50%); /*NEED TO FIX WIDTH */
+}
+
+
 </style>

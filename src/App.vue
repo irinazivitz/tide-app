@@ -1,9 +1,9 @@
 
 
 <template>
-  <div class="full-page p-3 mb-2 bg-success-subtle">
+  <div class="full-page  d-flex flex-column bg-success-subtle">
       <div class = "container-fluid"> 
-        <div class="row">
+        <div class="row p-3">
           <div class="col">
             <Header />
           </div>
@@ -48,6 +48,7 @@ export default {
   min-height: 100vh;
   width: 100%;
   margin: 0;
+  padding: 0;
   flex-direction: column;
   justify-content: space-between;
 }
@@ -59,5 +60,6 @@ main {
 footer {
   margin-top: auto;
 }
+
 
 </style>
