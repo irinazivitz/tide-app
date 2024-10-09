@@ -6,7 +6,22 @@
     <div class="container weather-tide-area" v-else>
         <div class="container" v-if="weatherStore.weatherData && weatherStore.weatherData.name && weatherStore.weatherData.sys"
                 :style="{backgroundImage : backgroundImage}">
-            <div class="d-flex align-items-center justify-content-between">
+
+                <!-- Mobile View -->
+        <div class="d-flex flex-row align-items-center justify-content-between d-md-none">
+            <img :src="weatherIconUrl" alt="weather icon" class="weather-icon me-2"/>
+            <div class="location-info me-2">
+                <span class="fw-bold">{{ weatherStore.weatherData.name }}, {{ weatherStore.weatherData.sys.country }}</span>
+            </div>
+            <div class="temp-info me-2">
+                    {{ convertedTemp }} °F
+            </div>
+            <div class="date-info">
+                    {{ dayAndDate }}
+            </div>
+        </div>
+            <!-- origina content for desktop  -->
+            <div class="d-none d-md-flex align-items-center justify-content-between">
                 <div class="d-flex align-items-center ">
                     <div class="m-0 p-0">
                         <img :src="weatherIconUrl" alt="weather icon" class="me-2"/>
@@ -82,6 +97,12 @@ export default {
             heightUnit: 'm',
         };
     },
+    mounted(){
+        window.addEventListener('resize', this.updateDate);
+    },
+    beforeUnmount(){
+        window.removeEventListener('resize', this.updateDate);
+    },
     computed: {
         weatherStore(){
             return useWeatherStore();
@@ -126,10 +147,12 @@ export default {
                 return ''; 
             },
         dayAndDate(){
+            if (!this.today) return '';
+            const isSmallScreen = window.innerWidth < 768;
             return this.today.toLocaleDateString('en-US', {
-                weekday: 'long',
                 month: 'long',
                 day: 'numeric',
+                ...(isSmallScreen ? {} : {weekday: 'long'})
             });
         },
         todayDate(){
@@ -165,6 +188,10 @@ export default {
             }
             return heightInFeet;
         },
+        
+        updateDate(){
+            this.today = new Date();
+        }
     },
     created() {
         this.weatherStore.setZipcode('90291');
@@ -200,5 +227,19 @@ export default {
     margin-left: calc(-50vw + 50%); /*NEED TO FIX WIDTH */
 }
 
+.weather-icon {
+    width: 40px;
+    height: 40px;
+}
 
+.location-info, .temp-info, .date-info {
+    font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+    .d-flex.flex-row {
+        flex-wrap: nowrap; /* Prevent wrapping */
+        gap: 10px; /* Add space between items */
+    }
+}
 </style>
