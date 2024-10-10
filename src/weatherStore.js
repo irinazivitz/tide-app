@@ -22,6 +22,7 @@ export const useWeatherStore = defineStore('weather', {
             tempUnit: 'F',
             loading: false,
             error: null,
+            isMobile: window.innerWidth <= 768,
     }),
     actions: {
         async setZipcode (zipcode) {
@@ -64,5 +65,9 @@ export const useWeatherStore = defineStore('weather', {
                 this.loading = false;
             }
         },
-    },
+
+        checkIfMobile() {
+            this.isMobile = window.innerWidth <=768;
+        }
+    }
 });

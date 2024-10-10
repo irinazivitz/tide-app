@@ -1,43 +1,23 @@
 <template>
-    <div v-if="weatherStore.loading">Loading...</div>
+    <div>
+        <div v-if="weatherStore.loading">Loading...</div>
     <div v-else-if = "weatherStore.error"> {{weatherStore.error }} </div>
-    
-
-    <div class="container weather-tide-area" v-else>
-        <div class="container" v-if="weatherStore.weatherData && weatherStore.weatherData.name && weatherStore.weatherData.sys"
-                :style="{backgroundImage : backgroundImage}">
-
-                
-
-            <div class="d-md-flex align-items-center justify-content-between">
-                <div class="d-flex align-items-center ">
-                    <div class="m-0 p-0">
-                        <img :src="weatherIconUrl" alt="weather icon" class="me-2"/>
-                    </div>
-                    <div class = "d-flex flex-column m-0"> 
-                        <span class="fw-bold me-3">
-                            {{ weatherStore.weatherData.name}}, {{weatherStore.weatherData.sys.country}}
-                        </span>
-                        <div>
-                            <span>
-                                    {{convertedTemp}} °{{weatherStore.tempUnit}}
-                            </span>
-                            <span class="ms-1 me-2 text-secondary" @click="toggleTempUnit" style="cursor: pointer; margin-left: 0px;">
-                                    |° {{ weatherStore.tempUnit === 'F' ? 'C' : 'F' }}
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <div class = "d-flex flex-column m-0 date-time-frame">
-                    <span> {{dayAndDate}} </span>
-                    <span> Local time: {{localTime}} </span>
-                </div> 
-            </div>
     </div>
-
-    <hr class="wide-hr">
-    
-
+   
+        <div class="d-flex flex-row align-items-center justify-content-between">
+            <img :src="weatherIconUrl" alt="weather icon" class="weather-icon me-2"/>
+            <div class="location-info me-2">
+                <span class="fw-bold">{{ weatherStore.weatherData.name }}, {{ weatherStore.weatherData.sys.country }}</span>
+            </div>
+            <div class="temp-info me-2">
+                    {{ convertedTemp }} °F
+            </div>
+            <div class="date-info">
+                    {{ dayAndDate }}
+            </div>
+        </div>
+        
+        
     <div v-if="weatherStore.tideData.extremes.length">
          
          <h4 class="text-center">Tide forecast for {{todayDate}}</h4>
@@ -67,12 +47,7 @@
             </p>
     
     </div>
-</div>
-    
-        
-                    
 </template>
-
 
 <script>
 import {useWeatherStore} from '../weatherStore';

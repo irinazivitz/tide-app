@@ -15,7 +15,9 @@
       <hr>
     
     <main class="flex-grow-1">
-      <today-tide />
+      <TodayTideMobile v-if = "isMobile" />
+      <TodayTide v-else />
+     
     </main>
     <footer class="mt-auto">
        &copy; 2024 All rights reserved. 
@@ -24,22 +26,42 @@
 </template>
 
 <script>
-import TodayTide from './components/TodayTide.vue';
-import Header from './components/AppHeader.vue';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import ZipcodeInput from './components/ZipcodeInput.vue';
+  import TodayTide from './components/TodayTide.vue';
+  import TodayTideMobile from './components/TodayTideMobile.vue';
+  import Header from './components/AppHeader.vue';
+  import 'bootstrap/dist/css/bootstrap.min.css';
+  import ZipcodeInput from './components/ZipcodeInput.vue';
+  import { useWeatherStore } from './weatherStore'; 
+  import {onMounted, onBeforeUnmount, computed } from 'vue';
 
 
 
-export default {
-  components: {
-   
-    TodayTide,
-    Header,
-    ZipcodeInput
-  }
+  export default {
+    components: {
+      TodayTide,
+      Header,
+      ZipcodeInput,
+      TodayTideMobile,
+    },
+    setup() {
+      const weatherStore = useWeatherStore();
 
-   }
+      const handleResize = () => {
+        weatherStore.checkIfMobile();
+      };
+
+      onMounted(() => {
+        window.addEventListener('resize', handleResize);
+        handleResize();
+      });
+
+      onBeforeUnmount(() => {
+        window.removeEventListener('resize', handleResize);
+      });
+      const isMobile = computed (() => weatherStore.isMobile);
+      return {isMobile};
+    },
+  };
 </script>
 
 
