@@ -9,13 +9,13 @@
         <div class="me-2">
             <span class="fw-bold">{{ weatherStore.weatherData.name }}, {{ weatherStore.weatherData.sys.country }}</span>
         </div>
-        <div class="me-2"> {{ convertedTemp }} °F </div>
+        <div class="me-2"> {{ convertedTemp }} °{{weatherStore.tempUnit}} </div>
         <div> {{ dayAndDate }} </div>
     </div>
         
     <div v-if="weatherStore.tideData.extremes.length">
          
-        <h4 class="text-center mt-4 mb-3">Tide forecast for {{todayDate}}</h4>
+        <h4 class="text-center mt-4 mb-3">Tide forecast for today</h4>
         <div class="ms-3 me-3">
             <table class = "table table-bordered table-striped custom-rounded-table" >
                 <thead> 
@@ -74,22 +74,6 @@ export default {
             const now = new Date();
             const options = { timeZone: timezone, hour: '2-digit', minute: '2-digit'};
             return new Intl.DateTimeFormat('en-US', options).format(now);
-        },
-        backgroundImage(){
-            const weather = this.weatherStore.weatherData.weather[0].main.toLowerCase();
-            let background = '';
-
-            if (weather === 'clear') {
-                background = 'sunny.jpg';
-            } else if (weather === 'rain'){
-                background = 'rainy.jpg';
-            } else if (weather === 'clouds'){
-                background = 'cloudy.jpg';
-            } else {
-                background = 'defaultBackground.jpg';
-            } return `url('/src/img/${background}')`; 
-            
-
         },
         convertedTemp() {
             const temp = this.weatherStore.weatherData?.main?.temp;

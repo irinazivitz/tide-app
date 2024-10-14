@@ -12,7 +12,7 @@
           </div>
         </div>
       </div>
-      <hr>
+     <!-- <hr> -->
     
     <main class="flex-grow-1">
       <TodayTideMobile v-if = "isMobile" />
@@ -59,7 +59,7 @@
         window.removeEventListener('resize', handleResize);
       });
       const isMobile = computed (() => weatherStore.isMobile);
-      return {isMobile};
+      return {isMobile}
     },
   };
 </script>
