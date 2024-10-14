@@ -1,50 +1,48 @@
 <template>
-    <div>
+    <div> 
         <div v-if="weatherStore.loading">Loading...</div>
-    <div v-else-if = "weatherStore.error"> {{weatherStore.error }} </div>
+        <div v-else-if = "weatherStore.error"> {{weatherStore.error }} </div>
     </div>
    
-        <div class="d-flex flex-row align-items-center justify-content-between">
-            <img :src="weatherIconUrl" alt="weather icon" class="weather-icon me-2"/>
-            <div class="location-info me-2">
-                <span class="fw-bold">{{ weatherStore.weatherData.name }}, {{ weatherStore.weatherData.sys.country }}</span>
-            </div>
-            <div class="temp-info me-2">
-                    {{ convertedTemp }} °F
-            </div>
-            <div class="date-info">
-                    {{ dayAndDate }}
-            </div>
+    <div class="d-flex flex-row align-items-center justify-content-center container weather-tide-area">
+        <img :src="weatherIconUrl" alt="weather icon" class="weather-icon me-2"/>
+        <div class="me-2">
+            <span class="fw-bold">{{ weatherStore.weatherData.name }}, {{ weatherStore.weatherData.sys.country }}</span>
         </div>
-        
+        <div class="me-2"> {{ convertedTemp }} °F </div>
+        <div> {{ dayAndDate }} </div>
+    </div>
         
     <div v-if="weatherStore.tideData.extremes.length">
          
-         <h4 class="text-center">Tide forecast for {{todayDate}}</h4>
-         <table class = "table table-bordered table-striped custom-rounded-table" >
-                    <thead> 
-                        <tr> 
+        <h4 class="text-center mt-4 mb-3">Tide forecast for {{todayDate}}</h4>
+        <div class="ms-3 me-3">
+            <table class = "table table-bordered table-striped custom-rounded-table" >
+                <thead> 
+                    <tr> 
                         <th scope="col" class = "text-center fw-bold">Tide</th>
                         <th scope="col" class = "text-center fw-bold">Local Time</th>
                         <th scope="col" class = "text-center fw-bold">
                             <span  class = "text-center fw-bold">Height ({{ heightUnit}} | </span>
                             <span class="ms-1 me-1 text-center fw-bold" @click="toggleHeightUnit" style="cursor: pointer; margin-left: 0px;">
-                             {{ heightUnit === 'm' ? 'ft' : 'm' }}) </span>
+                                {{ heightUnit === 'm' ? 'ft' : 'm' }}) </span>
                         </th>
-                        </tr>
-                    </thead>
-                    <tbody class="table-group-divider">
-                        <tr v-for="(tide, index) in weatherStore.tideData.extremes" :key="index">
-                            <th scope="row"> {{ tide.type}} </th>
-                            <td class = "text-center">{{ convertToLocalTime(tide.date)}}</td>
-                            <td class = "text-center"> {{convertHeight(tide.height).toFixed(2)}} {{ heightUnit}} </td>
-                        </tr>
-                    </tbody>
-        </table>
+                    </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                    <tr v-for="(tide, index) in weatherStore.tideData.extremes" :key="index">
+                        <th scope="row"> {{ tide.type}} </th>
+                        <td class = "text-center">{{ convertToLocalTime(tide.date)}}</td>
+                        <td class = "text-center"> {{convertHeight(tide.height).toFixed(2)}} {{ heightUnit}} </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
       
-            <p  class="text-center  fs-8 fst-italic">Your local current station is {{ weatherStore.tideData.station }}.
-                Source: <a  class="link-underline-primary" href="https://www.noaa.gov"> NOAA</a>.
-            </p>
+      
+        <p  class="text-center  fs-8 fst-italic mx-3">Your local current station is {{ weatherStore.tideData.station }}.
+            Source: <a  class="link-underline-primary" href="https://www.noaa.gov"> NOAA</a>.
+        </p>
     
     </div>
 </template>
@@ -129,7 +127,7 @@ export default {
     methods: {
         convertToLocalTime(isoString) {
                 const date = new Date (isoString);
-                const timezone = this.weatherStore.timezone; //grab it from the store
+                const timezone = this.weatherStore.timezone || 'UTC'; //grab it from the store
 
                 const options = {
                     timeZone: timezone,
@@ -177,26 +175,19 @@ export default {
     overflow: hidden;
 }
 
-.date-time-frame{
-    background-color: rgba(255, 255, 255, 0.8); /* Light background with opacity */
+.weather-tide-area{
+    background-color: rgba(73, 81, 80, 0.118); /* Light background with opacity */
     padding: 10px 15px; /* Padding for spacing inside the frame */
     border-radius: 8px;  /* Rounded corners for the frame */
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Optional: Add shadow for a raised effect */
     color: #000; /* Text color (you can change this based on your design) */
     max-width: fit-content; /* Adjust the frame width to the content */
-}
-.wide-hr{
-    width: 100vw;
-    margin-left: calc(-50vw + 50%); /*NEED TO FIX WIDTH */
+    font-size: 0.9rem;
 }
 
 .weather-icon {
     width: 40px;
     height: 40px;
-}
-
-.location-info, .temp-info, .date-info {
-    font-size: 0.9rem;
 }
 
 @media (max-width: 768px) {
