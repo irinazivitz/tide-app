@@ -1,8 +1,8 @@
 
 
 <template>
-  <div class="full-page  d-flex flex-column bg-success-subtle">
-      <div class = "container-fluid"> 
+  <div class="full-page  d-flex flex-column main-background">
+      <div class = "container-fluid header-area"> 
         <div class="row p-3">
           <div class="col">
             <Header />
@@ -19,7 +19,7 @@
       <TodayTide v-else />
      
     </main>
-    <footer class="mt-auto">
+    <footer class="footer-custom mt-auto">
        &copy; 2024 All rights reserved. 
     </footer>
   </div>
@@ -82,6 +82,22 @@ main {
 footer {
   margin-top: auto;
 }
+.footer-custom{
+  background-color: #2B4560;
+  color: #e1e7e0;
+  padding: 10px;
+  text-align: center;
+}
+.header-area{
+  background: linear-gradient(180deg, #2F6D80, #1C4A5B);
+  color: #e1e7e0;
+  border-bottom: 1px solid #6f8880;
+  
+}
+.main-background{
+  background-color: #6AA4B0
+}
+
 
 
 </style>

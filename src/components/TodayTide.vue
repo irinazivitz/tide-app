@@ -3,12 +3,8 @@
     <div v-else-if = "weatherStore.error"> {{weatherStore.error }} </div>
     
 
-    <div class="container weather-tide-area" v-else>
-        <div class="container" v-if="weatherStore.weatherData && weatherStore.weatherData.name && weatherStore.weatherData.sys"
-                :style="{backgroundImage : backgroundImage}">
-
-                
-
+    <div class="container" v-else>
+        <div class="container location-weather-box" v-if="weatherStore.weatherData && weatherStore.weatherData.name && weatherStore.weatherData.sys">
             <div class="d-md-flex align-items-center justify-content-between">
                 <div class="d-flex align-items-center ">
                     <div class="m-0 p-0">
@@ -23,24 +19,24 @@
                                     {{convertedTemp}} °{{weatherStore.tempUnit}}
                             </span>
                             <span class="ms-1 me-2 text-secondary" @click="toggleTempUnit" style="cursor: pointer; margin-left: 0px;">
-                                    |° {{ weatherStore.tempUnit === 'F' ? 'C' : 'F' }}
+                                    |°{{ weatherStore.tempUnit === 'F' ? 'C' : 'F' }}
                             </span>
                         </div>
                     </div>
                 </div>
-                <div class = "d-flex flex-column m-0 date-time-frame">
-                    <span> {{dayAndDate}} </span>
+                <div class = "d-flex flex-column m-3">
+                    <span class = "fw-bold"> {{dayAndDate}} </span>
                     <span> Local time: {{localTime}} </span>
                 </div> 
             </div>
     </div>
 
-    <hr class="wide-hr">
+    <!-- <hr class="wide-hr"> -->
     
 
-    <div v-if="weatherStore.tideData.extremes.length">
+    <div class = "tide-info-card" v-if="weatherStore.tideData.extremes.length">
          
-         <h4 class="text-center">Tide forecast for {{todayDate}}</h4>
+         <h4 class=" table-header-text text-center mb-3">Tide forecast for {{todayDate}}</h4>
          <table class = "table table-bordered table-striped custom-rounded-table" >
                     <thead> 
                         <tr> 
@@ -62,11 +58,12 @@
                     </tbody>
         </table>
       
-            <p  class="text-center  fs-8 fst-italic">Your local current station is {{ weatherStore.tideData.station }}.
-                Source: <a  class="link-underline-primary" href="https://www.noaa.gov"> NOAA</a>.
-            </p>
+           
     
     </div>
+     <p  class="text-center  fs-8 fst-italic">Your local current station is {{ weatherStore.tideData.station }}.
+                Source: <a  class="link-underline-primary" href="https://www.noaa.gov"> NOAA</a>.
+            </p>
 </div>
     
         
@@ -102,26 +99,11 @@ export default {
             const options = { timeZone: timezone, hour: '2-digit', minute: '2-digit'};
             return new Intl.DateTimeFormat('en-US', options).format(now);
         },
-        backgroundImage(){
-            const weather = this.weatherStore.weatherData.weather[0].main.toLowerCase();
-            let background = '';
-
-            if (weather === 'clear') {
-                background = 'sunny.jpg';
-            } else if (weather === 'rain'){
-                background = 'rainy.jpg';
-            } else if (weather === 'clouds'){
-                background = 'cloudy.jpg';
-            } else {
-                background = 'defaultBackground.jpg';
-            } return `url('/src/img/${background}')`; 
-            
-
-        },
+        
         convertedTemp() {
             const temp = this.weatherStore.weatherData?.main?.temp;
             if (temp === undefined) return '';
-            return this.weatherStore.tempUnit === 'F' ? temp : ((temp - 32) * (5/9)).toFixed(1);
+            return this.weatherStore.tempUnit === 'F' ? temp.toFixed(1) : ((temp - 32) * (5/9)).toFixed(1);
         },
         weatherIconUrl(){
                 if ( 
@@ -202,27 +184,12 @@ export default {
     overflow: hidden;
 }
 
-.date-time-frame{
-    background-color: rgba(255, 255, 255, 0.8); /* Light background with opacity */
-    padding: 10px 15px; /* Padding for spacing inside the frame */
-    border-radius: 8px;  /* Rounded corners for the frame */
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Optional: Add shadow for a raised effect */
-    color: #000; /* Text color (you can change this based on your design) */
-    max-width: fit-content; /* Adjust the frame width to the content */
-}
-.wide-hr{
-    width: 100vw;
-    margin-left: calc(-50vw + 50%); /*NEED TO FIX WIDTH */
-}
 
 .weather-icon {
     width: 40px;
     height: 40px;
 }
 
-.location-info, .temp-info, .date-info {
-    font-size: 0.9rem;
-}
 
 @media (max-width: 768px) {
     .d-flex.flex-row {
@@ -230,4 +197,32 @@ export default {
         gap: 10px; /* Add space between items */
     }
 }
+.tide-info-card {
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1), 
+              0 -2px 10px rgba(0, 0, 0, 0.05), 
+              2px 0 10px rgba(0, 0, 0, 0.05), 
+             -2px 0 4px rgba(0, 0, 0, 0.05);
+  padding: 16px;
+  margin-bottom: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  font-family: 'Roboto', sans-serif;
+  transition: box-shadow 0.3s ease-in-out;
+ 
+}
+.tide-info-card:hover {
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+.table-header-text {
+    color:#22354B;
+    font-family: 'Playfair Display', serif;
+    font-weight: bold;
+}
+.location-weather-box{
+font-family: 'Roboto', sans-serif;
+color:#22354B;
+}
+
+
+
 </style>
